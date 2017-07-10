@@ -5,7 +5,6 @@ import com.coxautodev.graphql.tools.SchemaParser;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -14,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import graphql.ExceptionWhileDataFetching;
-import graphql.GraphQLError;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLContext;
+import graphql.servlet.GraphQLErrorHandler;
 import graphql.servlet.SimpleGraphQLServlet;
 
 /**
@@ -37,7 +36,9 @@ public class GraphQLEndpoint extends SimpleGraphQLServlet {
     }
     
     public GraphQLEndpoint() {
-        super(buildSchema());
+        super(buildSchema(), null, null, null, errors -> errors.stream()
+            .map(e -> e instanceof ExceptionWhileDataFetching ? new SanitizedError((ExceptionWhileDataFetching) e) : e)
+            .collect(Collectors.toList()));
     }
 
     private static GraphQLSchema buildSchema() {
@@ -66,10 +67,7 @@ public class GraphQLEndpoint extends SimpleGraphQLServlet {
     }
 
     @Override
-    protected List<GraphQLError> filterGraphQLErrors(List<GraphQLError> errors) {
-        return errors.stream()
-                .filter(e -> e instanceof ExceptionWhileDataFetching || super.isClientError(e))
-                .map(e -> e instanceof ExceptionWhileDataFetching ? new SanitizedError((ExceptionWhileDataFetching) e) : e)
-                .collect(Collectors.toList());
+    protected GraphQLErrorHandler getGraphQLErrorHandler() {
+        return super.getGraphQLErrorHandler();
     }
 }
