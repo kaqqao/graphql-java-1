@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import graphql.ExceptionWhileDataFetching;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLContext;
-import graphql.servlet.GraphQLErrorHandler;
 import graphql.servlet.SimpleGraphQLServlet;
 
 /**
@@ -64,10 +63,5 @@ public class GraphQLEndpoint extends SimpleGraphQLServlet {
                 .map(userRepository::findById)
                 .orElse(null);
         return new AuthContext(user, request, response);
-    }
-
-    @Override
-    protected GraphQLErrorHandler getGraphQLErrorHandler() {
-        return super.getGraphQLErrorHandler();
     }
 }
