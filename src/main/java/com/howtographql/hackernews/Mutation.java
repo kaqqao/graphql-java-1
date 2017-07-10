@@ -1,6 +1,6 @@
 package com.howtographql.hackernews;
 
-import com.coxautodev.graphql.tools.GraphQLRootResolver;
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -11,7 +11,7 @@ import graphql.schema.DataFetchingEnvironment;
 /**
  * Created by bojan.tomic on 7/2/17.
  */
-public class Mutation implements GraphQLRootResolver {
+public class Mutation implements GraphQLMutationResolver {
     
     private final LinkRepository linkRepository;
     private final UserRepository userRepository;
