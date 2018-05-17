@@ -1,13 +1,13 @@
 package com.howtographql.hackernews;
 
-import com.coxautodev.graphql.tools.GraphQLRootResolver;
+import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 
 import java.util.List;
 
 /**
  * Created by bojan.tomic on 7/2/17.
  */
-class Query implements GraphQLRootResolver {
+class Query implements GraphQLQueryResolver {
 
     private final LinkRepository linkRepository;
 
